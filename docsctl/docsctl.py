@@ -40,7 +40,7 @@ except ImportError:  # check läuft auch ohne, dann ohne Schemaprüfung
 
 ENGINE = Path(os.environ.get("DOCSCTL_HOME", Path(__file__).resolve().parent.parent))
 ROOT = Path(os.environ.get("DOKU_ROOT", Path.cwd()))
-BUILD = ROOT / "build"
+BUILD = Path(os.environ.get("DOKU_BUILD", ROOT / "build"))
 SOURCES = Path(os.environ.get("DOKU_SOURCES", "/sources"))
 SPEC_DIR = ENGINE / "spec"
 PUPPETEER = os.environ.get("DOKU_PUPPETEER", "/opt/doku/puppeteer.json")
@@ -194,7 +194,14 @@ def run(cmd, **kw):
 # --------------------------------------------------------------------------- Katalog
 def load_catalog():
     if (ROOT / "catalog.yml").is_file():
-        return load_yaml(ROOT / "catalog.yml")
+        cat = load_yaml(ROOT / "catalog.yml")
+        # Umgebung (z. B. DOKU_ENV=prod): portal-Werte aus environments.<env> überschreiben die Grundwerte
+        env = os.environ.get("DOKU_ENV")
+        if env:
+            if env not in cat.get("environments", {}):
+                raise SystemExit(f"Umgebung '{env}' fehlt in catalog.yml (environments)")
+            cat.setdefault("portal", {}).update(cat["environments"][env].get("portal", {}))
+        return cat
     # Einzel-Repo (z. B. beim Partner): docs/ im Arbeitsverzeichnis ist das einzige Tool
     if not (ROOT / "docs").is_dir():
         raise SystemExit(f"Weder catalog.yml noch docs/ in {ROOT}")

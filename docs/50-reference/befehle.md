@@ -31,6 +31,8 @@ Aufruf über das Skript `bin/docsctl`: es startet das Builder-Image mit dem aktu
 | `DOKU_ROOT` | Arbeitsverzeichnis | Projekt mit `catalog.yml`, `brands/`, `build/` |
 | `DOCSCTL_HOME` | Verzeichnis von docsctl | Engine: Regeln, Vorlagen, Portal-Optik |
 | `DOKU_SOURCES` | `/sources` | eingebundene Repositories je Tool-ID |
+| `DOKU_BUILD` | `build/` im Projekt | Ausgabeverzeichnis |
+| `DOKU_ENV` | leer | Umgebung aus `catalog.yml` `environments.<env>.portal` (z. B. andere URLs für Produktion) |
 
 *Tabelle: Umgebungsvariablen*
 

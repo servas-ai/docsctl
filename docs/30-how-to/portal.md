@@ -41,6 +41,17 @@ Mit `portal.operator` (Name, Adresse, E-Mail, Register) erzeugt docsctl zusätzl
 Datenschutzseite und einen Footer mit Kontakt. `portal.group_brands` ordnet Gruppen aus dem Login
 einem vorausgewählten Branding im PDF-Export zu.
 
+Unterscheiden sich lokale Vorschau und Produktion nur in Adressen, stehen die abweichenden Werte unter
+`environments.<name>.portal`; `DOKU_ENV=<name>` wählt sie beim Bauen, `DOKU_BUILD` trennt die Ausgabe:
+
+```yaml
+environments:
+  prod:
+    portal:
+      site_url: https://docs.example.com
+      logout_redirect: https://login.example.com/api/oidc/end-session
+```
+
 Gebaut wird mit dem Builder-Image, das Projektverzeichnis ist `/work`, jedes Repository wird
 schreibgeschützt unter `/sources/<id>` eingebunden (`docsctl mounts` erzeugt dafür eine Compose-Datei).
 `build/site` ist statisch und kann hinter jeden Webserver mit Login gestellt werden, zum Beispiel
