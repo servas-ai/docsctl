@@ -1,0 +1,105 @@
+<!-- PDF-Export: Branding-Auswahl. PDFs werden beim Build vorerzeugt (/artifacts/index.json). -->
+<div class="modal fade" id="dokuExportModal" tabindex="-1" aria-labelledby="dokuExportTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dokuExportTitle">PDF exportieren</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label" for="dokuExportTool">Dokument</label>
+        <select class="form-select mb-3" id="dokuExportTool"></select>
+        <div class="form-label">Branding</div>
+        <div id="dokuExportBrands"></div>
+        <div id="dokuExportUser" class="mt-2"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+        <a class="btn btn-primary" id="dokuExportGo" href="#" download>PDF herunterladen</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  const state = { idx: null, user: null, groups: [], tool: null };
+  const m = location.pathname.match(/\/tools\/([^\/]+)\//);
+  state.tool = m ? m[1] : null;
+
+  async function load() {
+    if (state.idx) return state.idx;
+    state.idx = await fetch('/artifacts/index.json', { credentials: 'same-origin' }).then(r => r.json());
+    try {
+      const r = await fetch('/oauth2/userinfo', { credentials: 'same-origin' });
+      if (r.ok) {
+        const u = await r.json();
+        state.user = u.preferredUsername || u.user || u.email || null;
+        state.groups = u.groups || [];
+      }
+    } catch (e) { /* ohne Login-Proxy (lokale Vorschau) */ }
+    return state.idx;
+  }
+
+  function preferredBrand(idx, toolId) {
+    for (const g of state.groups) {
+      if (idx.group_brands && idx.group_brands[g]) return { brand: idx.group_brands[g], why: 'Gruppe ' + g };
+    }
+    const t = idx.tools[toolId] || {};
+    return { brand: t.default_brand || idx.default_brand, why: 'Standard' };
+  }
+
+  function render(toolId) {
+    const idx = state.idx;
+    const sel = document.getElementById('dokuExportTool');
+    sel.innerHTML = '';
+    Object.entries(idx.tools).forEach(([id, t]) => {
+      const o = document.createElement('option'); o.value = id; o.textContent = t.title; sel.appendChild(o);
+    });
+    sel.value = toolId && idx.tools[toolId] ? toolId : Object.keys(idx.tools)[0];
+    const pref = preferredBrand(idx, sel.value);
+    const box = document.getElementById('dokuExportBrands');
+    box.innerHTML = '';
+    Object.entries(idx.brands).forEach(([id, b]) => {
+      const pdf = (idx.tools[sel.value].pdfs || {})[id];
+      const d = document.createElement('div'); d.className = 'form-check';
+      d.innerHTML = '<input class="form-check-input" type="radio" name="dokuBrand" id="dokuBrand-' + id + '" value="' + id + '"' +
+        (pdf ? '' : ' disabled') + (id === pref.brand ? ' checked' : '') + '>' +
+        '<label class="form-check-label" for="dokuBrand-' + id + '"><strong>' + b.label + '</strong>' +
+        '<span class="doku-brand-desc">' + (b.description || '') + (pdf ? '' : ' – noch nicht gebaut') + '</span></label>';
+      box.appendChild(d);
+    });
+    document.getElementById('dokuExportUser').textContent = state.user
+      ? 'Angemeldet als ' + state.user + (state.groups.length ? ' (Gruppen: ' + state.groups.join(', ') + ')' : '') + ' – Vorauswahl nach ' + pref.why + '.'
+      : 'Vorauswahl: ' + pref.why + '.';
+    update();
+    sel.onchange = () => render(sel.value);
+    box.onchange = update;
+  }
+
+  function update() {
+    const idx = state.idx;
+    const tool = document.getElementById('dokuExportTool').value;
+    const r = document.querySelector('input[name="dokuBrand"]:checked');
+    const go = document.getElementById('dokuExportGo');
+    const url = r ? (idx.tools[tool].pdfs || {})[r.value] : null;
+    go.href = url || '#';
+    go.classList.toggle('disabled', !url);
+    go.setAttribute('download', url ? url.split('/').pop() : '');
+    go.dataset.brand = r ? r.value : '';
+  }
+
+  async function open(toolId) {
+    await load();
+    render(toolId || state.tool);
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('dokuExportModal')).show();
+  }
+  window.dokuExport = open;
+
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('.doku-export-btn, a[href="#doku-export"]');
+    if (!el) return;
+    e.preventDefault();
+    open(el.dataset.tool || state.tool);
+  });
+})();
+</script>

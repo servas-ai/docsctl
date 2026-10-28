@@ -1,0 +1,18 @@
+{
+  "theme": "neutral",
+  "fontFamily": "DejaVu Sans, sans-serif",
+  "themeVariables": {
+    "fontFamily": "DejaVu Sans, sans-serif",
+    "fontSize": "15px"
+  },
+  "sequence": {
+    "mirrorActors": false,
+    "useMaxWidth": false
+  },
+  "state": {
+    "useMaxWidth": false
+  },
+  "flowchart": {
+    "useMaxWidth": false
+  }
+}

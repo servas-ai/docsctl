@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# docsctl im Builder-Image ausführen: aktuelles Verzeichnis = /work, eigener Benutzer, ohne Netz.
+#   bin/docsctl check --path docs     bin/docsctl build
+# Image bauen: make -C <docsctl> image. Anderes Image: DOCSCTL_IMAGE=...
+set -euo pipefail
+IMAGE=${DOCSCTL_IMAGE:-docsctl:2026.10}
+docker image inspect "$IMAGE" >/dev/null 2>&1 || {
+  echo "Image $IMAGE fehlt – erst: make -C $(cd "$(dirname "$0")/.." && pwd) image" >&2; exit 1; }
+exec docker run --rm -u "$(id -u):$(id -g)" --network none -v "$PWD:/work" "$IMAGE" "$@"

@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/servas-ai/docsctl/main/spec/frontmatter.schema.json",
+  "title": "Doku-Konvention v1 (docsctl): YAML-Front-Matter einer Kapiteldatei",
+  "type": "object",
+  "required": [
+    "doc_schema",
+    "id",
+    "title",
+    "kind",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "doc_schema": {
+      "const": 1,
+      "description": "Version dieser Konvention."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*(\\.[a-z0-9][a-z0-9-]*)*$",
+      "description": "Stabile, repo-weit eindeutige ID, z. B. architecture.context oder howto.lokal-starten."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 120,
+      "description": "Kapiteltitel ohne Nummer."
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 400,
+      "description": "Ein bis zwei Sätze; landet in llms.txt und auf der Tool-Startseite."
+    },
+    "kind": {
+      "enum": [
+        "overview",
+        "tutorial",
+        "how-to",
+        "reference",
+        "explanation",
+        "architecture",
+        "adr",
+        "operations",
+        "glossary",
+        "appendix"
+      ],
+      "description": "Diátaxis-Typ (tutorial, how-to, reference, explanation) bzw. arc42/MADR/Betrieb/Anhang."
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "review",
+        "reviewed",
+        "released",
+        "deprecated"
+      ]
+    },
+    "owner": {
+      "type": "string"
+    },
+    "audience": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "engineering",
+          "operations",
+          "management",
+          "partner",
+          "customer",
+          "agent"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "confidentiality": {
+      "enum": [
+        "public",
+        "partner",
+        "internal",
+        "confidential"
+      ]
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Sortierschlüssel, nur nötig wenn docs.yml ein Verzeichnis statt Dateien listet."
+    },
+    "arc42_section": {
+      "type": "string",
+      "pattern": "^(0[1-9]|1[0-2])$"
+    },
+    "adr_status": {
+      "enum": [
+        "proposed",
+        "accepted",
+        "rejected",
+        "deprecated",
+        "superseded"
+      ]
+    },
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Belege: Dateien im Repo (pfad) oder fremde Repos (repo:pfad)."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "adr"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "adr_status"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "architecture"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "arc42_section"
+        ]
+      }
+    }
+  ]
+}

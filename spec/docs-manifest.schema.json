@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/servas-ai/docsctl/main/spec/docs-manifest.schema.json",
+  "title": "Doku-Konvention v1 (docsctl): docs/docs.yml",
+  "type": "object",
+  "required": ["schema", "tool", "document", "chapters"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": 1 },
+    "tool": {
+      "type": "object",
+      "required": ["id", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "summary": { "type": "string", "maxLength": 600 },
+        "owner": { "type": "string" },
+        "lifecycle": { "enum": ["concept", "development", "beta", "production", "deprecated"] },
+        "repository": { "type": "string" },
+        "commit": { "type": "string" }
+      }
+    },
+    "document": {
+      "type": "object",
+      "required": ["language", "version", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "language": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+        "version": { "type": "string" },
+        "status": { "enum": ["draft", "review", "released"] },
+        "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "authors": { "type": "array", "items": { "type": "string" } },
+        "numbering": { "enum": ["auto", "manual"], "default": "auto" },
+        "default_brand": { "type": "string" },
+        "confidentiality": { "enum": ["public", "partner", "internal", "confidential"] }
+      }
+    },
+    "front_matter": { "$ref": "#/$defs/entries", "description": "Vor dem Inhaltsverzeichnis (Kurzfassung, Management Summary); römische Seitenzahlen." },
+    "chapters": { "$ref": "#/$defs/entries" },
+    "appendices": { "$ref": "#/$defs/entries" }
+  },
+  "$defs": {
+    "entries": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[^/].*(\\.md|/)$" },
+      "description": "Dateien (.md) oder Verzeichnisse (mit / am Ende, sortiert nach order, dann Dateiname)."
+    }
+  }
+}

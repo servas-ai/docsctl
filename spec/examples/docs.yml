@@ -1,0 +1,25 @@
+schema: 1
+tool:
+  id: docsctl
+  title: "docsctl"
+  subtitle: "Doku-Konvention v1: Markdown in docs/ wird zu Web-Portal, PDF je Branding und Agentenfassung"
+  summary: >-
+    Werkzeug und Regelwerk für technische Dokumentation im Repository: docs/ nach einer einzigen
+    Konvention schreiben, mit docsctl prüfen und daraus Web-Seiten, PDFs im Stil einer Abschlussarbeit
+    (je Branding) und Agentenfassungen (llms.txt, llms-full.md) bauen.
+  owner: servas.ai
+  lifecycle: development
+  repository: servas-ai/docsctl
+document:
+  language: de-AT
+  version: "1.0.0"
+  status: draft
+  date: "2026-10-28"
+  authors: [servas.ai]
+  numbering: auto
+  default_brand: neutral
+  confidentiality: public
+chapters:
+  - index.md
+  - 30-how-to/
+  - 50-reference/

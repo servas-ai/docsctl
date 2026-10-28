@@ -1,0 +1,21 @@
+# neutral – ohne Firmenbezug, klassische Abschlussarbeits-Typografie.
+# Schriften sind in Typst eingebaut (Libertinus Serif, DejaVu Sans Mono) -> keine Fontdateien nötig.
+meta:
+  name: neutral
+color:
+  palette:
+    ink: "#111111"
+    muted: "#555555"
+    rule: "#999999"
+    code-bg: "#f4f4f4"
+    accent: "#333333"
+    table-head: "#ffffff"
+    table-head-fg: "#111111"
+  foreground: ink
+  background: "#ffffff"
+  primary: "#1f3a5f"
+  secondary: muted
+typography:
+  base: Libertinus Serif
+  headings: Libertinus Serif
+  monospace: DejaVu Sans Mono
