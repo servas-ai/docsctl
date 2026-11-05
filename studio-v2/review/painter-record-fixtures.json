@@ -1,0 +1,19 @@
+{
+  "source_layout_sha256": "7db7ce65ed5a11b768198cbfe1a89c1362aec09637b2786a9475fed81dbe7fb0",
+  "source": "Build03 retained layout-evidence.json",
+  "projection": "Exact page/role/geometry values; source asset hashes omitted. No private image bytes.",
+  "raster": {
+    "page": 1,
+    "role": "original_wordmark",
+    "x_pt": 42.0,
+    "y_top_pt": 29.04189944134078,
+    "width_pt": 108.0,
+    "height_pt": 20.916201117318437,
+    "effective_dpi": 716.0
+  },
+  "legacy_vector": {
+    "page": 2,
+    "role": "original_provider_wordmark_vector",
+    "transformation": "scale only"
+  }
+}

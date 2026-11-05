@@ -168,7 +168,13 @@ def draw_provider(p, asset: dict, x: float, top: float, width: float, height: fl
     drawing.add(group)
     drawing.scale(factor, factor)
     renderPDF.draw(drawing, p.c, x+(width-vw*factor)/2, p.h-top-height+(height-vh*factor)/2)
+    # Same fitted box as renderPDF.draw, in physical page points, top-left origin.
+    # Raster Painter.image records use this identical contract; scale exactly once.
+    dw, dh = vw*factor, vh*factor
+    dx, dy = x+(width-dw)/2, top+(height-dh)/2
     p.images.append({'page': p.page, 'role': 'original_provider_wordmark_vector',
+                     'x_pt': dx*p.scale, 'y_top_pt': dy*p.scale,
+                     'width_pt': dw*p.scale, 'height_pt': dh*p.scale,
                      'source_sha256': digest(path.read_bytes()), 'transformation': 'scale only'})
 
 

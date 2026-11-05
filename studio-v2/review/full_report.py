@@ -248,28 +248,58 @@ def render_full(p,content,data,spec,assets,hero,base,refine):
 
 
 def layout_audit(lines,images,page_sizes):
-    """Check actual font-metric line boxes, not allocated paragraph widths.
+    """Audit physical page-point boxes with a top-left origin, fail closed.
 
-    Does not inspect appearance or infer that a user's design is accepted.
+    Raster and vector producers must report their actual fitted placement.
+    Missing geometry is a schema failure, never zero-filled or exempted.
     """
     failures=[]
-    for a in lines:
+    def number(v):
+        return type(v) in (int,float) and math.isfinite(v)
+    def page_ok(n):
+        return type(n) is int and 1 <= n <= len(page_sizes)
+    for size in page_sizes:
+        if len(size)!=2 or not all(number(v) and v>0 for v in size):
+            raise ValueError('Invalid physical page size')
+    valid_lines=[]
+    for i,a in enumerate(lines):
+        if not isinstance(a,dict) or not page_ok(a.get('page')) or 'call' not in a:
+            failures.append({'gate':'TEXT_RECORD_SCHEMA','record':i});continue
+        box=a.get('bbox')
+        if not isinstance(box,(list,tuple)) or len(box)!=4 or not all(number(v) for v in box) or box[2]<box[0] or box[3]<box[1]:
+            failures.append({'gate':'TEXT_RECORD_SCHEMA','record':i,'page':a['page']});continue
         n=a['page'];w,h=page_sizes[n-1]
-        box=a['bbox']
-        if not all(math.isfinite(x) for x in box) or box[0]<-0.1 or box[1]<-0.1 or box[2]>w+.1 or box[3]>h+.1:
+        valid_lines.append(a)
+        if box[0]<-.1 or box[1]<-.1 or box[2]>w+.1 or box[3]>h+.1:
             failures.append({'gate':'TEXT_OUTSIDE_PAGE','page':n,'call':a['call']})
+    image_boxes=[]
+    keys=('x_pt','y_top_pt','width_pt','height_pt')
+    for i,im in enumerate(images):
+        if not isinstance(im,dict) or not page_ok(im.get('page')) or not isinstance(im.get('role'),str):
+            failures.append({'gate':'IMAGE_RECORD_SCHEMA','record':i});continue
+        missing=[k for k in keys if k not in im]
+        if missing or not all(number(im[k]) for k in keys if k in im):
+            failures.append({'gate':'IMAGE_RECORD_SCHEMA','record':i,'page':im['page'],'role':im['role'],'missing':missing});continue
+        x,y,w,h=(im[k] for k in keys)
+        if w<=0 or h<=0 or not math.isfinite(x+w) or not math.isfinite(y+h):
+            failures.append({'gate':'IMAGE_RECORD_SCHEMA','record':i,'page':im['page'],'role':im['role']});continue
+        box=(x,y,x+w,y+h);pw,ph=page_sizes[im['page']-1]
+        image_boxes.append((im,box))
+        if x<-.1 or y<-.1 or box[2]>pw+.1 or box[3]>ph+.1:
+            failures.append({'gate':'IMAGE_OUTSIDE_PAGE','record':i,'page':im['page'],'role':im['role']})
     def overlaps(a,b):
         return min(a[2],b[2])-max(a[0],b[0])>.7 and min(a[3],b[3])-max(a[1],b[1])>.7
-    for i,a in enumerate(lines):
-        for b in lines[i+1:]:
+    for i,a in enumerate(valid_lines):
+        for b in valid_lines[i+1:]:
             if a['page']==b['page'] and a['call']!=b['call'] and overlaps(a['bbox'],b['bbox']):
                 failures.append({'gate':'TEXT_COLLISION','page':a['page'],'calls':[a['call'],b['call']]})
-        for im in images:
-            if im['page']!=a['page']:continue
-            box=(im['x_pt'],im['y_top_pt'],im['x_pt']+im['width_pt'],im['y_top_pt']+im['height_pt'])
-            if overlaps(a['bbox'],box):failures.append({'gate':'TEXT_IMAGE_COLLISION','page':a['page'],'call':a['call'],'role':im['role']})
+        for im,box in image_boxes:
+            if im['page']==a['page'] and overlaps(a['bbox'],box):
+                failures.append({'gate':'TEXT_IMAGE_COLLISION','page':a['page'],'call':a['call'],'role':im['role']})
     return {'status':'PASS_GEOMETRY_ONLY' if not failures else 'FAIL_GEOMETRY','failures':failures,
-            'pages':len(page_sizes),'checked_lines':len(lines),'scope':'font-metric bounds, text/text and text/image; not visual approval'}
+            'pages':len(page_sizes),'checked_lines':len(lines),'checked_images':len(images),
+            'validated_image_boxes':len(image_boxes),'coordinate_space':'physical_page_points_top_left',
+            'scope':'schema, font-metric bounds, text/text and text/image; not visual approval'}
 
 
 def _cell(s):
