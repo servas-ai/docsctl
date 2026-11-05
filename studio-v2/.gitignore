@@ -1,0 +1,5 @@
+__pycache__/
+brand-pack.js
+vendor/
+*.studio-v2.json
+*.pdf

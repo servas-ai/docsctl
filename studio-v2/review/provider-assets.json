@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "asset_usage": "Private comparison proof. Source provenance is not a trademark licence or design approval.",
+  "fetch_policy": "Build03 is offline: reuse only hash-verified Build02 bytes. No fetch, no retry, no new provider. Banner is not a matrix wordmark.",
+  "assets": [
+    {
+      "name": "Puck",
+      "id": "puck",
+      "role": "wordmark",
+      "format": "svg_paths",
+      "source_url": "https://res.cloudinary.com/die3nptcg/image/upload/Puck_Logo_Black_RGB_dqsjag.svg",
+      "authority_url": "https://github.com/puckeditor/puck/blob/d14401c3a47947543e9de733ef1a20fb85140d52/README.md",
+      "authority_git_blob_sha1": "44e4e76fc775b5862a775d308b85f465c85de51c",
+      "git_blob_sha1": null,
+      "expected_bytes": 1477,
+      "checked_date": "2026-11-05",
+      "expected_source_sha256": "6d8c23f5202cbc14bac53c81668886b1b9d17ebc6cf9ec724542942fb6707c98"
+    },
+    {
+      "name": "OpenUI",
+      "id": "openui",
+      "role": "wordmark",
+      "format": "svg_paths",
+      "source_url": "https://raw.githubusercontent.com/thesysdev/openui/main/docs/public/openui-logo-wordmark.svg",
+      "authority_url": "https://github.com/thesysdev/openui/blob/main/docs/public/openui-logo-wordmark.svg",
+      "git_blob_sha1": "f0e2202a1ef165553c26ead111ebcb5726241474",
+      "expected_bytes": 16267,
+      "checked_date": "2026-11-05",
+      "expected_source_sha256": "19db18391a7b99a27989ba77c33ae3e96cb38c984d646443e9029f11575dd4b2"
+    },
+    {
+      "name": "pdfme",
+      "id": "pdfme",
+      "role": "favicon",
+      "format": "ico",
+      "source_url": "https://raw.githubusercontent.com/pdfme/pdfme/main/website/static/favicon.ico",
+      "authority_url": "https://github.com/pdfme/pdfme/blob/main/website/static/favicon.ico",
+      "git_blob_sha1": "bb06c7ae7919aad25bcf6d1318d037cce7c9181b",
+      "expected_bytes": 15406,
+      "checked_date": "2026-11-05",
+      "expected_source_sha256": "e30f2a04cb0f4ee0ec7e98b70ceda1540908028b78234169c883ef9930dc9fa9"
+    },
+    {
+      "name": "Typst",
+      "id": "typst",
+      "role": "readme_banner",
+      "format": "png",
+      "source_url": "https://user-images.githubusercontent.com/17899797/226108480-722b770e-6313-40d7-84f2-26bebb55a281.png",
+      "authority_url": "https://github.com/typst/typst/blob/main/README.md",
+      "authority_git_blob_sha1": "a8d18a6180c3f1849feb2688fe179f3a93677682",
+      "git_blob_sha1": null,
+      "expected_bytes": 297802,
+      "checked_date": "2026-11-05",
+      "expected_source_sha256": "f1768040dba5296ed5e3fa64815387294edbe4f091dcf6974e5afc17db5f6e8a"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { toPuck, fromPuck } from './puck-bridge.mjs';
+const doc={version:2,title:'Test',subtitle:'',author:'A',date:'2026-11-05',format:'portrait',theme:{accent:'#52606d',ink:'#1a1a1a',paper:'#ffffff',font:'Arial'},pages:[{id:'p1',kind:'cover',title:'Test',body:'',art:0,blur:0,mermaid:''}]};
+const validate=d=>{assert.equal(d.version,2);assert.ok(d.pages.length);return d};
+test('lossless round trip',()=>assert.deepEqual(fromPuck(toPuck(doc,validate),validate),doc));
+test('input is not mutated',()=>{const before=structuredClone(doc);toPuck(doc,validate);assert.deepEqual(doc,before)});
+test('validator required',()=>assert.throws(()=>toPuck(doc)));
+test('unknown component rejected',()=>{const d=toPuck(doc,validate);d.content[0].type='HTML';assert.throws(()=>fromPuck(d,validate))});
+test('unknown page prop rejected',()=>{const d=toPuck(doc,validate);d.content[0].props.script='bad';assert.throws(()=>fromPuck(d,validate))});
+test('unknown root prop rejected',()=>{const d=toPuck(doc,validate);d.root.props.execute='bad';assert.throws(()=>fromPuck(d,validate))});
+test('nested zones not silently lost',()=>{const d=toPuck(doc,validate);d.zones={custom:[]};assert.throws(()=>fromPuck(d,validate))});
+test('validator invoked after editing',()=>{const d=toPuck(doc,validate);d.content[0].props.title='Changed';let called=false;const result=fromPuck(d,x=>{called=true;return validate(x)});assert.ok(called);assert.equal(result.pages[0].title,'Changed')});
