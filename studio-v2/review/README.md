@@ -1,46 +1,82 @@
-# Build01-Review und begrenzte Build02-Verfeinerung
+# Build02 geprüft — gezielte Build03-Reparatur
 
-**Kein neuer Editor und kein Ersatz der Quarto/Typst-Produktionspipeline.** Dieses Modul enthält neutrale, opt-in Proof-Seitenfunktionen für einen bereits vorhandenen externen ReportLab-Painter. Markenbilder, Schriftdateien, private PDF-Raster und Runtimepfade bleiben außerhalb des öffentlichen Repositories.
+**Kein neuer Editor, kein neuer Stil, keine finale Designfreigabe.** Cover, Aspekta,
+Original-Wortbildlogo, Diagramm und Seitenraster des bestehenden Proofs bleiben
+maßgeblich. Die hier gespeicherten neutralen Funktionen enthalten keine Brandbilder,
+Fontdateien, privaten PDF-Raster oder Runtimepfade. Der externe Owner-Runner bleibt
+für tatsächliche PDF-Ausgabe und echte Poppler-Raster zuständig.
 
-## Tatsächlich zurückgekommen und geprüft
+## Belegter Rücklauf
 
-Der zugeordnete Ownerbuild hat vier A4-Querformatseiten und eine zusätzliche A2-Matrix geliefert. Der Rücklauf wurde anhand der ZIP-/Receipt-Hashes und **aller 34 Manifestdateien** erneut bytegenau geprüft: 34 PASS, 0 Abweichungen. Die tatsächlichen vier A4-Seitenraster und die A2-Matrix wurden einzeln betrachtet. Zusätzlich: ursprüngliche sechsseitige Vorschau, Coververgleich, alte Kontaktübersicht und die alte Matrixseite 7. Kein neuer lokaler PDF-/Browserrenderlauf und keine vollständige individuelle Neuprüfung aller elf verworfenen Seiten.
-
-| Prüfobjekt | SHA-256 |
+| Prüfung | Beobachtung |
 |---|---|
-| Rückgabe-ZIP, 8.357.149 Bytes | `a959ddac27f8a6cd977f15b19cc5161a7553087da481434e6ba737d80e3dfa08` |
-| Unveränderte execution-result.json | `ee8f8a076b15cf5e02fa609f96e79a610646da82fc32f4a0f396044540057b09` |
-| Vierseitiger A4-Proof | `56becba1ff8385735b5be2944a1bb1fad415eb85b91cddb05c463070f81c96b9` |
-| Zusätzliche A2-Matrix | `67ed42deb35d7ea87ce700141be893a6a15a1a66b0cff380ad1aba2f1c19abf9` |
+| Build02-ZIP | 5.855.498 Bytes; SHA256 `d33f0b2f65a5b53c688e0be19a3507061b8fd691340c2e2c128135fecc23ef01` |
+| Originalreceipt | SHA256 `4cd949351dc8eb090d855f9c1ea9b7c8991632d3a0130dc22c8c4bec695a725c` |
+| Manifest | Alle 33 Ausgaben byte-/hashgleich geprüft |
+| Erhaltene Baseline | Alle 34 Dateien des vorhandenen Build01-Rücklaufs erneut geprüft; keine erneute Live-VM-Prüfung behauptet |
+| Seiten | Vier A4-, eine A2- und eine Anbieterprüfseite einzeln anhand der gelieferten echten Serverraster angesehen |
+| Cover | Build01-/Build02-PNGs bytegleich; SHA256 `a6d79cae52581a6862e41491f808af03f18d7c2c5d3466ab7099a5f9bd6ad6e0` |
 
-Der erhaltene Ausführungsbeleg berichtet Exit 0, eingebettete Aspekta und tatsächliche Poppler-Raster. Das ist ein technischer Nachweis, **keine finale Designfreigabe**. Live-Prozess und native Modellwahl wurden hier nicht erneut ausgelesen.
+Das eingegangene Receipt berichtet erfolgreichen Serverbuild mit eingebetteter
+Aspekta und Poppler. Ein technischer oder Coverpixel-PASS ist kein globales Designurteil.
+Der aktuelle Befund lautet **OWNER_REVIEW_CHANGES_REQUESTED**.
 
-## Seitenfeedback und begrenzter Diff
+## Exakte Restfehler und begrenzte Korrektur
 
-| Seite | Beobachtung an Build01 | Build02-Änderung |
-|---|---|---|
-| 1 / Cover | Asterisk-Wortbildmarke, feinere Schrift, große Glas-Komposition und weißes Raster sichtbar wiederhergestellt | Coverfunktion, Daten und Assets unverändert wiederverwenden; zusätzlicher exakter Pixelvergleich auf dem Server |
-| 2 / Matrix | Vier Rollen und 14 Kriterien gut lesbar; orange Statusmarkierung fehlt in der Legende; Quellen ohne Datum | Alle vier Statussymbole erklären, Primärquellen verlinken, Prüftag und PR-Revision sichtbar machen; Originalanbieterzeichen nur bei erfolgreichem verifiziertem Abruf |
-| 3 / Diagramm | Lesbarer Grundfluss, zu wenig konkrete Ein-/Ausgaben und Verantwortlichkeiten | Quelle → serieller Build → tatsächliche PDF/Raster → Review; Korrekturrückwege zu Quelle und Layout, Dateibeispiele, PR-Draft statt automatischer Freigabe |
-| 4 / Bildseite | Wiederholt weitgehend das Covermotiv | Tatsächliche Logo- und Tabellenausschnitte aus verworfener PDF und Build01; kurze Beschriftung, klare Herkunft, kein Vergleich identischer Daten behauptet |
-| A2 | Sinnvolle vergrößerte Zusatzfassung | Gleiche Inhaltskorrekturen; A4 nicht ersetzen |
+| Befund | Ursache / Änderung |
+|---|---|
+| Schwarzes Kästchen in Matrixfußnote | Im Quelltext steht U+2260; aus der gelieferten PDF wird an dieser Stelle U+0000 extrahiert. Neuer Wortlaut: „Produktfunktion bedeutet nicht: im PR integriert oder getestet.“ Kein Ersatzfont. Der Guest-Runner prüft vor jeder Textausgabe die tatsächliche Aspekta-Glyphenmap und dokumentiert zusätzlich die U+2260-Abdeckung aller drei Gewichte. |
+| Typst fälschlich als Wortmarke | Das gelieferte Bild ist ein README-Banner. Rolle jetzt `readme_banner`; im Matrixkopf steht der normale Textname, im separaten Herkunftsbeleg „README-Banner; keine freistehende Wortmarke“. Keine neue Marke nachgebaut. |
+| Puck blieb unbenutzt | Der Abruf war erfolgreich. Der alte Flat-Path-Parser scheitert an der XML-Deklaration; außerdem enthält die unveränderte Quelle vier Gruppen, sechs Pfade und ein Polygon. Die begrenzte Normalisierung entfernt nur inerte Metadaten, flacht transformlose Gruppen ab und schließt die originalen Polygonpunkte exakt. CSS, Transformationen, Skripte, DTD, Entitäten, Bilder und Links bleiben ausgeschlossen. |
+| Vergrößerte Logo-Crops unscharf | Derselbe Ausschnitt wird im Gast aus den vorhandenen, hashgeprüften PDFs gerastert: Identität mit 600 dpi, Tabellen mit 300 dpi. Die Platzierung hält mindestens 300 dpi gesampelte Auflösung ein; bei fehlendem PDF/Renderer wird ausschließlich der vorhandene Crop kleiner gezeigt. Keine Retusche, keine erfundene Vorher-Abbildung. |
 
-Status dieses Reviews: **REVIEWED_CHANGES_REQUESTED**. Das gesonderte Relay-Seitenfeedback wurde vom Nutzer mitgeteilt. Nutzer-Endabnahme und unabhängige finale Designfreigabe sind **NOT_GRANTED**. Die ursprüngliche vollständige PDF und der Originalgenerator bleiben fehlende Originalbytes; Build01 ist eine Rekonstruktion anhand der Vorschau.
+Die Puck-Quelldatei wurde am tatsächlich zurückgegebenen Bytebestand geprüft:
+`6d8c23f5202cbc14bac53c81668886b1b9d17ebc6cf9ec724542942fb6707c98`.
+Die normalisierte SVG-Struktur besteht aus sieben gefüllten Pfaden; Geometrie,
+Reihenfolge und Farben bleiben erhalten. **Das ist ein Parsernachweis, noch kein
+neuer Rendering- oder Markenidentitäts-PASS.** OpenUI bleibt unverändert; pdfme bleibt
+als Favicon/Bildzeichen bezeichnet. Quelle und Markenrechte sind getrennte Prüfungen.
 
-## Dateien und Ausführung
+Die Evidenzseite bleibt ein **Reviewanhang**, keine neu getestete Produktansicht.
+Der Hinweis auf unterschiedliche Tabelleninhalte bleibt sichtbar. Ihr Rahmen und
+ihre Beschriftungspositionen bleiben erhalten; nur die Bilder werden auflösungsbewusst
+eingepasst. Höhere Raster-dpi können keine fehlenden Details in einer Quelle erzeugen.
 
-- `refine_pages.py`: Prüfvertrag, Matrix-/Diagramm-/Evidenzseiten und eng begrenzte SVG-Pfadübernahme. Kein Coverrenderer, keine Netzwerk-/Modellaufrufe, keine eingebetteten Branddateien.
-- `refinement.json`: editierbare Vergleichskorrekturen, Zuständigkeiten und Primärquellen mit Prüftag. Bibliotheksfunktionen sind keine bereits integrierten PR-Funktionen und kein Benchmark.
-- `provider-assets.json`: vier konkrete Primärquellen, Asset-Rollen und vorhandene Byte-/Blob-Pins. Kein unbeschränkter Scraper oder neuer Credentialimporter. Repository-Lizenz ist keine pauschale Markenfreigabe.
-- `test_refine_pages.py`: reine Verträge und Layoutbefehlsaufzeichnung, keine tatsächliche PDF-/Font-Renderingprüfung.
+## Code und Prüfung
+
+- `refine_pages.py`: gleiche Seitengeometrie; lesbare Fußnote, korrekte Asset-Rollen,
+  begrenzte Bitmapplatzierung. Kein Coverrenderer, kein Netzwerk.
+- `repair_assets.py`: reine Funktionen für Glyphenabdeckung, genaue SVG-Normalisierung,
+  Crop-Koordinaten und DPI-Untergrenze; keine automatischen Assetabrufe.
+- `provider-assets.json`: dieselben vier Quellen, nun mit allen zurückgelesenen
+  SHA256-Pins und korrekter Bannerrolle; Build03 nutzt ausschließlich vorhandene Bytes.
+- `refinement.json`: unveränderte Vergleichs-/Flussdaten; PR-Snapshot `ea74210`.
+- `test_refine_pages.py`, `test_repair_assets.py`: reine Verträge und Fake-Painter-Aufrufe.
 
 ```bash
 cd studio-v2/review
-python -m unittest test_refine_pages -v
+python -m unittest test_refine_pages test_repair_assets -v
 ```
 
-**40 Tests wurden ausgeführt und bestanden.** Geprüft sind u. a. Manifestintegrität, Pfad-/Symlinkschutz, Ausschluss von Fontdateien, Quellen-URLs, Ablehnung automatischer Freigabe, Tabellenspalten, Vier-Symbol-Legende, Graphsemantik und restriktives SVG-Parsing. Der Fake-Painter zeichnet nur Aufrufe auf und misst weder echte Glyphen noch Layoutüberläufe.
+**85 Tests ausgeführt: 85 bestanden.** Kein lokaler PDF-Build, keine lokale
+Rasterisierung, kein Browser- oder Modellstart. Die Tests messen keine echten
+Fontmetriken. Die Prüfung echter Fontdateien, Ausgabe und Poppler-Crops erfolgt erst
+im bereits zugeordneten Guest-Runner; er substituiert keine Schrift und lädt nichts nach.
 
-Der private, hashgebundene Owner-Runner lädt den schon ausgeführten Build01-Painter aus exakt dem vorhandenen Stand, verwendet dessen originale Brand-/Schriftassets und rendert ausschließlich im bereits zugeordneten Serverauftrag. Er wurde separat als Relay-Paket geliefert, nicht mit privaten Pfaden hier committed. Er soll alle neuen Seiten rasterisieren, eine große Anbieterzeichen-Prüfseite und Build01/Build02-Paare zurückgeben. Fehlende oder nicht unterstützte Logos bleiben ausdrücklich offen; keine erfundenen Ersatzmarken. Das Cover-Pixelgate ist nur ein Regressionsgate, kein globales Designurteil.
+## Nächster abgegrenzter Lauf
 
-**Build02 ist vorbereitet, noch nicht ausgeführt.** Keine neuen PDFs, neuen Seitenraster, Anbieterzeichen-Sichtprüfungen oder Cover-Pixel-PASSs werden durch diesen Commit behauptet. Native Mermaid-Ausführung, Produktions-Quarto/Typst-Abnahme, 300-dpi-Heromotiv und finale Designfreigabe bleiben offen. Keine zusätzlichen Modellaufrufe, kein Browserstart, kein Merge, kein Deployment.
+Ein einzelnes privates, hashgebundenes Reparaturpaket verwendet exakt die bestehenden
+Build01-/Build02-Quellen, Receipts und Assets. Es ändert keine Baseline-Datei und
+prüft nach dem Lauf beide Manifeste erneut. Alle sechs neuen Seiten müssen als echte
+PDF-Raster zurückgegeben werden. Cover und unverändertes Diagramm bekommen jeweils
+einen exakten Pixelvergleich mit Build02; die anderen Seiten Vorher/Nachher-Paare.
+
+**Build03: PAYLOAD_READY / SERVER_EXECUTION_NOT_RUN / VISUAL_REVIEW_NOT_RUN.**
+Der bestandene Build02 ist keine Ausführung dieses Patches. 300-dpi-Heromotiv,
+vollständige Originalbytes, native Mermaid-Ausführung, Produktionsabnahme,
+Anbieter-/Markenrechte und finale Nutzerfreigabe bleiben getrennte offene Gates.
+Kein Netzwerk, keine Installation, kein zusätzlicher Worker, kein Merge oder Deployment.
+
+Historische Build01-/Build02-Vorbereitung und deren frühere 40 Tests bleiben unter
+Commit `ea74210641327c95e0c6ffaf7be9653d6c5e82fe` nachvollziehbar; sie werden nicht
+als neue Build03-Abnahme ausgegeben.

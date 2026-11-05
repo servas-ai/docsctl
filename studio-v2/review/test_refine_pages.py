@@ -115,7 +115,7 @@ class SpecAndLayout(unittest.TestCase):
         a,b=PainterRecorder(),PainterRecorder();r.page_matrix(a,matrix_fixture(),SPEC,{});r.page_matrix(b,matrix_fixture(),SPEC,{},True)
         self.assertEqual(a.texts,b.texts)
     def test_evidence_no_hero(self):
-        p=PainterRecorder();r.page_evidence(p,{k:Path(k) for k in ['old_identity','new_identity','old_table','new_table']})
+        p=PainterRecorder();r.page_evidence(p,{k:{'path':Path(k),'pixel_size':[300,100],'display_dpi':300} for k in ['old_identity','new_identity','old_table','new_table']})
         self.assertEqual(len(p.images),4)
         self.assertTrue(all('actual_pdf_' in item[0][-1] for item in p.images))
         self.assertTrue(any('Layoutvergleich, nicht gleiche Daten' in t for t in p.texts))

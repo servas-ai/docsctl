@@ -11,6 +11,7 @@ import re
 from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
+from repair_assets import FOOTNOTE, MATRIX_ASSET_ROLES, bitmap_box
 
 STATUS_LABELS = {
     'native': 'Kernfunktion', 'adapter': 'eigene Integration',
@@ -185,7 +186,7 @@ def page_matrix(p, data: dict, spec: dict, assets: dict, expanded: bool = False)
         cx = x+label_w+j*col_w
         p.rect(cx+2, top, col_w-4, 43, colors[j], radius=5)
         asset = assets.get(provider['name'])
-        if asset:
+        if asset and asset['role'] in MATRIX_ASSET_ROLES:
             if asset['role'] == 'favicon':
                 draw_provider(p, asset, cx+12, top+6, 17, 17)
                 p.text(provider['name'], cx+36, top+7, col_w-44, 10.2, '450', max_height=19)
@@ -215,11 +216,13 @@ def page_matrix(p, data: dict, spec: dict, assets: dict, expanded: bool = False)
     for status, xx, width in [('native',48,96), ('adapter',176,120), ('outside',337,137), ('unknown',517,160)]:
         p.symbol(status, xx, yy+4)
         p.text(STATUS_LABELS[status], xx+10, yy, width, 6.8, color='muted')
-    p.text('Produktfunktion ≠ integrierter oder getesteter PR-Stand. Systemrolle = Architekturvorschlag.',
+    p.text(FOOTNOTE,
            44, yy+16, 754, 6.7, color='muted')
     p.links([{'id':5, 'short':'PR-Stand ' + spec['pr_base_short'], 'url':spec['pr_source_url']}], yy+31)
-    missing = len(spec['providers']) - len(assets)
-    tail = f'{missing} Anbieterzeichen offen; keine Ersatzlogos.' if missing else 'Originalzeichen aus Primärquellen; visuelle Freigabe offen.'
+    missing = sum(p['name'] not in assets for p in spec['providers'])
+    tail = 'Typst: Textlabel; README-Banner nur im Herkunftsbeleg.'
+    if missing:
+        tail = f'{missing} Zeichen offen; Typst-Banner nur im Herkunftsbeleg.'
     p.text(tail, 350, yy+31, 445, 6.4, color='muted')
     p.end()
 
@@ -297,11 +300,18 @@ def evidence_crops(baseline: Path, out: Path) -> tuple[dict, list[dict]]:
             crop=tuple(round(v*s) for v,s in zip(box,(w,h,w,h)))
             dest=target/(name+'.png')
             im.crop(crop).save(dest)
-        paths[name]=dest
+        paths[name]={'path':dest, 'pixel_size':[crop[2]-crop[0],crop[3]-crop[1]], 'display_dpi':300}
         records.append({'id':name, 'source':relative, 'source_sha256':digest(source.read_bytes()),
                         'crop_pixels':list(crop), 'output_sha256':digest(dest.read_bytes()),
                         'role':'actual_pdf_raster_crop', 'new_screenshot':False})
     return paths,records
+
+
+def place_evidence(p, crop: dict, x, top, width, height, role):
+    if not isinstance(crop, dict) or set(crop) != {'path', 'pixel_size', 'display_dpi'}:
+        raise ValueError('verified crop metadata required')
+    w, h = bitmap_box(crop['pixel_size'], width, height, crop['display_dpi'], p.scale)
+    p.image(crop['path'], x+(width-w)/2, top+(height-h)/2, w, h, role)
 
 
 def page_evidence(p, crops: dict) -> None:
@@ -310,7 +320,7 @@ def page_evidence(p, crops: dict) -> None:
     p.kicker('Echte Ausschnitte statt zweiter Dekoseite')
     p.text('Die Änderung.\nDirekt im Dokument.',44,95,520,31,leading=32,
            max_height=85,tracking=-.55)
-    p.text('Originalraster aus den PDFs.\nBuild01 ist noch nicht final freigegeben.',
+    p.text('Echte PDF-Ausschnitte; keine neue Produktansicht.\nReviewanhang, keine finale Freigabe.',
            578,112,217,8.2,color='muted',max_height=42)
     # Two side-by-side panels with a shared label rail, not another hero image.
     for x,title,tint in [(44,'VORHER / ABGELEHNT','surface'),(427,'BUILD01 / BEIBEHALTEN','pale_teal')]:
@@ -318,12 +328,12 @@ def page_evidence(p, crops: dict) -> None:
         p.text(title,x+10,190,350,7.4,'450',max_height=13,tracking=.35)
     for key,x in [('old_identity',44),('new_identity',427)]:
         p.rect(x,219,371,124,'paper',stroke='rule')
-        p.image(crops[key],x+7,224,357,114,'actual_pdf_identity_crop')
+        place_evidence(p,crops[key],x+7,224,357,114,'actual_pdf_identity_crop')
     p.text('Textschriftzug ohne das originale Bildzeichen.',44,350,365,8.0,color='muted',max_height=15)
     p.text('Original-Asterisk und originale Wortmarke.',427,350,365,8.0,color='muted',max_height=15)
     for key,x in [('old_table',44),('new_table',427)]:
         p.rect(x,380,371,112,'paper',stroke='rule')
-        p.image(crops[key],x+5,383,361,106,'actual_pdf_table_crop')
+        place_evidence(p,crops[key],x+5,383,361,106,'actual_pdf_table_crop')
     p.text('Vorlagenfähigkeiten statt konkreter Werkzeuge.',44,499,371,7.2,color='muted',max_height=15)
     p.text('Vier Tool-Rollen: Farbe, Status und präzise Zellen.',427,499,371,7.2,color='muted',max_height=15)
     p.text('Layoutvergleich, nicht gleiche Daten. Quellen: abgelehnte PDF S. 1/7 und Build01 S. 1/2; Ausschnitte ohne Retusche.',

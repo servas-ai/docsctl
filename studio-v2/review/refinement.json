@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "checked_date": "2026-11-05",
-  "pr_base_short": "ba241d1",
-  "pr_source_url": "https://github.com/servas-ai/docsctl/tree/ba241d1699fd499670b3bab3f927323bcf9202d2/studio-v2",
+  "pr_base_short": "ea74210",
+  "pr_source_url": "https://github.com/servas-ai/docsctl/tree/ea74210641327c95e0c6ffaf7be9653d6c5e82fe/studio-v2",
   "providers": [
     {
       "name": "Puck",
@@ -165,7 +165,7 @@
       "id": 5,
       "url": "https://github.com/servas-ai/docsctl/pull/1",
       "checked_date": "2026-11-05",
-      "revision": "ba241d1699fd499670b3bab3f927323bcf9202d2",
+      "revision": "ea74210641327c95e0c6ffaf7be9653d6c5e82fe",
       "supports": [
         "integration status separate from library functions"
       ],
