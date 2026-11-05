@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "checked_date": "2026-11-05",
+  "pr_base_short": "ba241d1",
+  "pr_source_url": "https://github.com/servas-ai/docsctl/tree/ba241d1699fd499670b3bab3f927323bcf9202d2/studio-v2",
+  "providers": [
+    {
+      "name": "Puck",
+      "display_domain": "puckeditor.com",
+      "documentation_url": "https://puckeditor.com/docs/getting-started"
+    },
+    {
+      "name": "OpenUI",
+      "display_domain": "thesysdev/openui",
+      "documentation_url": "https://github.com/thesysdev/openui"
+    },
+    {
+      "name": "pdfme",
+      "display_domain": "pdfme.com",
+      "documentation_url": "https://pdfme.com/docs/getting-started"
+    },
+    {
+      "name": "Typst",
+      "display_domain": "typst.app/docs",
+      "documentation_url": "https://typst.app/docs/"
+    }
+  ],
+  "comparison_scope": "Open-source libraries / compiler; hosted editors and paid AI are separate. Architecture judgment, not benchmark.",
+  "row_patches": {
+    "Canvas / Editor": [
+      {
+        "text": "Komponenten",
+        "status": "native"
+      },
+      {
+        "text": "UI-Renderer",
+        "status": "native"
+      },
+      {
+        "text": "Designer",
+        "status": "native"
+      },
+      {
+        "text": "Compiler; Editor extern",
+        "status": "adapter"
+      }
+    ],
+    "Tabellen": [
+      {
+        "text": "Komponente",
+        "status": "adapter"
+      },
+      {
+        "text": "Katalogbaustein",
+        "status": "adapter"
+      },
+      {
+        "text": "Table-Plugin",
+        "status": "native"
+      },
+      {
+        "text": "Table",
+        "status": "native"
+      }
+    ],
+    "Stand in docsctl PR #1": [
+      {
+        "text": "Adapter, ungebaut",
+        "status": "unknown"
+      },
+      {
+        "text": "Parser fehlt",
+        "status": "unknown"
+      },
+      {
+        "text": "Nicht integriert",
+        "status": "unknown"
+      },
+      {
+        "text": "Pipeline; hier nicht geprüft",
+        "status": "unknown"
+      }
+    ]
+  },
+  "flow": {
+    "automatic_release": false,
+    "nodes": [
+      {
+        "id": "source",
+        "title": "Quellen binden",
+        "owner": "01 / Fachowner",
+        "input": "report.json + Originalassets",
+        "output": "geprüfte Pfade + Hashes"
+      },
+      {
+        "id": "render",
+        "title": "Serial bauen",
+        "owner": "02 / Relay + Owner-Skript",
+        "input": "Layout + Aspekta + Quellen",
+        "output": "A4-PDF + A2-Matrix"
+      },
+      {
+        "id": "candidate",
+        "title": "Seiten belegen",
+        "owner": "03 / Poppler + Prüfcode",
+        "input": "tatsächliche PDF-Dateien",
+        "output": "Seiten-PNGs + Receipt"
+      },
+      {
+        "id": "review",
+        "title": "Befund bewerten",
+        "owner": "04 / Owner + Relay-Feedback",
+        "input": "Raster + Originalvorschau",
+        "output": "Befunde; keine Freigabe"
+      }
+    ]
+  },
+  "source_ledger": [
+    {
+      "id": 1,
+      "url": "https://puckeditor.com/docs/getting-started",
+      "checked_date": "2026-11-05",
+      "supports": [
+        "React component editor",
+        "component config and persisted data",
+        "Render component"
+      ],
+      "method": "primary documentation opened via web; not a runtime test"
+    },
+    {
+      "id": 2,
+      "url": "https://github.com/thesysdev/openui",
+      "checked_date": "2026-11-05",
+      "supports": [
+        "OpenUI language",
+        "generative UI",
+        "renderer catalog"
+      ],
+      "method": "primary repository opened via web; not a local integration test"
+    },
+    {
+      "id": 3,
+      "url": "https://pdfme.com/docs/getting-started",
+      "checked_date": "2026-11-05",
+      "supports": [
+        "generator and Designer",
+        "JSON template and basePdf",
+        "text expand and explicit table plugin"
+      ],
+      "method": "primary documentation opened via web; not a runtime test"
+    },
+    {
+      "id": 4,
+      "url": "https://typst.app/docs/",
+      "checked_date": "2026-11-05",
+      "supports": [
+        "math",
+        "bibliography",
+        "table",
+        "PDF export"
+      ],
+      "method": "primary reference opened via web; comparison scope is compiler, not hosted editor"
+    },
+    {
+      "id": 5,
+      "url": "https://github.com/servas-ai/docsctl/pull/1",
+      "checked_date": "2026-11-05",
+      "revision": "ba241d1699fd499670b3bab3f927323bcf9202d2",
+      "supports": [
+        "integration status separate from library functions"
+      ],
+      "method": "authenticated connector readback"
+    }
+  ]
+}
