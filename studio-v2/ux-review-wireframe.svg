@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="920" viewBox="0 0 1440 920" role="img" aria-labelledby="title desc">
+<title id="title">Studio v2: vorgeschlagener Prüfmodus</title>
+<desc id="desc">Statisches UI-Konzept, keine implementierte Funktion. Links durchsuchbare Seiten, mittig ein neutrales Dokument, rechts eine klickbar gedachte Liste von Exportblockern, Warnungen und Quellen. Keine echten Projektdaten.</desc>
+<defs>
+ <pattern id="grid" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.65" fill="#d4d6d1"/></pattern>
+ <linearGradient id="glass" x1="0" x2="1"><stop stop-color="#ffffff"/><stop offset=".5" stop-color="#d4dfe5"/><stop offset="1" stop-color="#f8fafb"/></linearGradient>
+ <radialGradient id="ball" cx=".3" cy=".25" r=".8"><stop stop-color="#ffffff"/><stop offset=".5" stop-color="#c8d6df"/><stop offset="1" stop-color="#8da6b4"/></radialGradient>
+</defs>
+<rect width="1440" height="920" fill="#f7f7f5"/>
+<g font-family="Arial, Helvetica, sans-serif" fill="#1a1a1a">
+ <rect x="0" y="0" width="1440" height="76" fill="#fff"/>
+ <text x="28" y="46" font-size="26" font-weight="700" letter-spacing="-1">docsctl</text>
+ <path d="M137 27v24" stroke="#e8e8e5"/>
+ <text x="156" y="45" font-size="14" fill="#70716d">Studio v2</text>
+ <text x="427" y="44" font-size="11" letter-spacing="1.5" fill="#52606d">UX-KONZEPT · NICHT IMPLEMENTIERT</text>
+ <rect x="1093" y="19" width="132" height="38" rx="9" fill="#fff" stroke="#e8e8e5"/>
+ <text x="1113" y="43" font-size="12">JSON exportieren</text>
+ <rect x="1238" y="19" width="174" height="38" rx="9" fill="#ededeb"/>
+ <text x="1259" y="43" font-size="12" fill="#70716d">PDF · 2 Blocker lösen</text>
+ <path d="M0 76h1440" stroke="#e8e8e5"/>
+ <rect x="0" y="77" width="226" height="802" fill="#fff"/>
+ <text x="22" y="112" font-size="15" font-weight="700">Seiten</text><text x="187" y="112" font-size="12" fill="#70716d">4</text>
+ <rect x="15" y="130" width="196" height="37" rx="8" fill="#f7f7f5"/>
+ <circle cx="32" cy="147" r="5" fill="none" stroke="#70716d"/><path d="m36 151 5 5" stroke="#70716d"/>
+ <text x="50" y="153" font-size="11" fill="#70716d">Seite suchen …</text>
+ <rect x="13" y="184" width="200" height="68" rx="10" fill="#eef1f3" stroke="#cbd3d9"/>
+ <text x="27" y="212" font-size="11" fill="#52606d">01</text><text x="56" y="212" font-size="13" font-weight="700">Deckblatt</text><text x="56" y="234" font-size="11" fill="#70716d">Layout geprüft</text>
+ <text x="27" y="285" font-size="11" fill="#70716d">02</text><text x="56" y="285" font-size="13">Kurzfassung</text><text x="56" y="307" font-size="11" fill="#8b6424">! Quelle ergänzen</text>
+ <text x="27" y="357" font-size="11" fill="#70716d">03</text><text x="56" y="357" font-size="13">Vergleichsmatrix</text><text x="56" y="379" font-size="11" fill="#a03737">× Inhalt zu lang</text>
+ <text x="27" y="429" font-size="11" fill="#70716d">04</text><text x="56" y="429" font-size="13">Quellen</text><text x="56" y="451" font-size="11" fill="#a03737">× Ungültiger Verweis</text>
+ <path d="M15 780h196" stroke="#e8e8e5"/>
+ <text x="24" y="806" font-size="11" fill="#52606d">Lokal gespeichert · 14:32</text><text x="24" y="827" font-size="10" fill="#70716d">Beispielzustand / keine Echtzeitdaten</text>
+ <rect x="227" y="77" width="884" height="53" fill="#fff"/>
+ <rect x="447" y="86" width="103" height="34" rx="8" fill="#f7f7f5"/>
+ <text x="468" y="108" font-size="12" fill="#70716d">Bearbeiten</text>
+ <rect x="558" y="86" width="91" height="34" rx="8" fill="#1a1a1a"/>
+ <text x="579" y="108" font-size="12" fill="#fff">Prüfen</text>
+ <rect x="657" y="86" width="107" height="34" rx="8" fill="#f7f7f5"/>
+ <text x="680" y="108" font-size="12" fill="#70716d">Vorschau</text>
+ <text x="1026" y="107" font-size="12" fill="#70716d">64 %</text>
+ <rect x="227" y="131" width="884" height="748" fill="url(#grid)"/>
+ <rect x="419" y="158" width="501" height="701" fill="#d8d8d2" opacity=".25"/>
+ <rect x="413" y="152" width="501" height="701" fill="#fff"/>
+ <text x="453" y="196" font-size="13" font-weight="700">Example Studio</text><text x="812" y="196" font-size="7" fill="#70716d">DEMO</text>
+ <path d="M453 238h20" stroke="#52606d" stroke-width="2"/>
+ <text x="453" y="257" font-size="7.5" letter-spacing="1.5" fill="#52606d">ENTSCHEIDUNGSBRIEF</text>
+ <text x="453" y="304" font-size="37" font-weight="700" letter-spacing="-1.3">Eine klare</text><text x="453" y="345" font-size="37" font-weight="700" letter-spacing="-1.3">Entscheidung.</text>
+ <text x="453" y="381" font-size="11" fill="#70716d">Ein nachvollziehbarer Befund.</text><text x="453" y="400" font-size="11" fill="#70716d">Ein nächster überprüfbarer Schritt.</text>
+ <path d="M474 660h286l79 22H553z" fill="#edf0f2" stroke="#dce2e6"/>
+ <g fill="url(#glass)" stroke="#c3d1d9">
+  <rect x="534" y="529" width="75" height="130" rx="9"/><rect x="631" y="460" width="78" height="199" rx="9"/><rect x="734" y="577" width="64" height="82" rx="9"/><rect x="589" y="548" width="166" height="47" rx="9" opacity=".8"/>
+ </g>
+ <circle cx="640" cy="646" r="30" fill="url(#ball)"/>
+ <path d="M453 756h419" stroke="#e8e8e5"/>
+ <text x="453" y="775" font-size="8" fill="#70716d">Synthetischer Inhalt · keine echten Forschungsdaten</text><text x="842" y="816" font-size="8" fill="#70716d">01 / 04</text>
+ <rect x="1112" y="77" width="328" height="802" fill="#fff"/>
+ <text x="1134" y="111" font-size="16" font-weight="700">Exportprüfung</text>
+ <text x="1134" y="137" font-size="12" fill="#70716d">2 Blocker · 1 Hinweis · 1 geprüft</text>
+ <path d="M1134 155h284" stroke="#e8e8e5"/>
+ <rect x="1128" y="171" width="295" height="120" rx="10" fill="#fbf3f3" stroke="#efdede"/>
+ <text x="1144" y="195" font-size="10" font-weight="700" fill="#a03737">× BLOCKER · SEITE 03</text><text x="1144" y="220" font-size="13" font-weight="700">Matrix läuft über</text><text x="1144" y="242" font-size="11" fill="#70716d">Zwei Zeilen passen nicht auf die Seite.</text><text x="1144" y="272" font-size="11" font-weight="700" fill="#52606d">Zur betroffenen Stelle →</text>
+ <rect x="1128" y="303" width="295" height="108" rx="10" fill="#fbf3f3" stroke="#efdede"/>
+ <text x="1144" y="327" font-size="10" font-weight="700" fill="#a03737">× BLOCKER · SEITE 04</text><text x="1144" y="352" font-size="13" font-weight="700">Quellenverweis ungültig</text><text x="1144" y="389" font-size="11" font-weight="700" fill="#52606d">Quelle bearbeiten →</text>
+ <rect x="1128" y="423" width="295" height="108" rx="10" fill="#fcf8f0" stroke="#eee4d4"/>
+ <text x="1144" y="447" font-size="10" font-weight="700" fill="#8b6424">! HINWEIS · SEITE 02</text><text x="1144" y="472" font-size="13" font-weight="700">Kennzahl ohne Beleg</text><text x="1144" y="509" font-size="11" font-weight="700" fill="#52606d">Quelle oder DEMO-Status setzen →</text>
+ <path d="M1134 553h284" stroke="#e8e8e5"/>
+ <path d="m1134 573 4 4 7-9" fill="none" stroke="#52606d" stroke-width="1.6"/><text x="1152" y="578" font-size="11" font-weight="700" fill="#52606d">Schrift lokal verfügbar</text>
+ <text x="1134" y="622" font-size="12" font-weight="700">Exportprofil</text>
+ <rect x="1134" y="639" width="280" height="40" rx="8" fill="#fff" stroke="#dddeda"/><text x="1146" y="664" font-size="12">Browser-PDF · Layout-Demo</text>
+ <text x="1134" y="705" font-size="11" fill="#70716d">Produktionsbuild separat prüfen.</text><text x="1134" y="725" font-size="11" fill="#70716d">Kein PDF/A- oder PDF/UA-Siegel.</text>
+ <rect x="0" y="880" width="1440" height="40" fill="#1a1a1a"/>
+ <text x="26" y="905" font-size="12" fill="#fff">Vorschlag: Fehlerliste statt flüchtigem Toast · Sprung zur Ursache · keine stille Inhaltsänderung</text>
+ <text x="1235" y="905" font-size="11" fill="#ddd">Statischer Wireframe</text>
+</g>
+</svg>
